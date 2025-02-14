@@ -1,28 +1,8 @@
 'use strict';
+const { allPuzzles, allWordSets } = require('./audit-values');
 
-const puzzle = `..1.1..1...
-10000..1000
-..0.0..0...
-..1000000..
-..0.0..0...
-1000..10000
-..0.1..0...
-....0..0...
-..100000...
-....0..0...
-....0......`
-const words = [
-    'popcorn',
-    'fruit',
-    'flour',
-    'chicken',
-    'eggs',
-    'vegetables',
-    'pasta',
-    'pork',
-    'steak',
-    'cheese',
-]
+const puzzle = '2001\n0..0\n1000\n0..0';
+const words = ['casa', 'alan', 'ciao', 'anta'];
 
 function createArrayPuzzle(emptyPuzzle) {
     let stringLines = String(emptyPuzzle).split(/\r?\n/);
@@ -35,6 +15,39 @@ function createArrayPuzzle(emptyPuzzle) {
         arrayLines.push(arrayLine);
     }
     return arrayLines;
+}
+
+function validInput(arrayPuzzle, words) {
+    if (arrayPuzzle == null || arrayPuzzle.length == 0 || words == null || !Array.isArray(words) || words.length == 0) {
+        return false;
+    }
+
+    // row lengths must be equal and rows can include only '.', '0', '1' or '2'
+    let lenRow = arrayPuzzle[0].length;
+    let cells = 0;
+    for (let row of arrayPuzzle) {
+        if (row.length != lenRow) return false;
+        for (let char of row) {
+            if (char != '.' && char != '0' && char != '1' && char != '2') return false;
+            if (char == '0' || char == '1' || char == '2') cells++;
+        }
+    }
+
+    // look for duplicate words
+    let chars = 0;
+    for (let i = 0; i < words.length; i++) {
+        for (let j = i + 1; j < words.length; j++) {
+            if (words[i] == words[j]) return false;
+        }
+        for (const c of words[i]) chars++;
+    }
+
+    // clearly too many cells
+    if (cells > chars) {
+        return false;
+    }
+
+    return true;
 }
 
 function getStartCoordinates(puzzle) {
@@ -194,7 +207,7 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     }
 
     // Solution complete, end here        
-    if (words.length == 0) { // Checking with (words.length == 0) or startIndex > allStartCoordinates.length - 1?
+    if (words.length == 0) {
         // Start positions with '2' will spawn duplicate solutions so check uniqueness
         if (uniqueSolution(solutions, currentPuzzle)) {
             solutions.push(currentPuzzle);
@@ -207,8 +220,10 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     startIndex++;
     for (let i = 0; i < words.length; i++) {
         let word = words[i];
+        // When word doesn't fit, abandon. Is this 'backtracking'?
         const directions = wordFits(currentPuzzle, word, startCoords);
 
+        // When found fits, recur with updated values
         for (let direction of directions) {
             let newPuzzle = updatePuzzle(currentPuzzle, word, startCoords, direction); // write word into current puzzle
             let newWords = words.slice(0, i).concat(words.slice(i + 1)) // remove word from array
@@ -217,7 +232,7 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     }
 }
 
-function printPuzzle(arrayPuzzle){
+function printPuzzle(arrayPuzzle) {
     for (let line of arrayPuzzle) {
         for (let char of line) {
             process.stdout.write(char);
@@ -227,24 +242,19 @@ function printPuzzle(arrayPuzzle){
 }
 
 function crosswordSolver(stringPuzzle, words) {
-    // TODO?: Check words
-    // - is it an array (of stings)
-    // - duplicate words
-
     // Puzzle to an array of character arrays for mutability
     let arrayPuzzle = createArrayPuzzle(stringPuzzle);
-    // TODO: Check input puzzle: 
-    // - Do we check if it's a string?
-    // - not empty
-    // - allow: 0, 1, 2 and .
-    // - lines must be same length
-    // - don't allow: more cells than chars in words
+
+    if (!validInput(arrayPuzzle, words)) {
+        console.log("Error");
+        return;
+    }
 
     let allStartCoordinates = getStartCoordinates(arrayPuzzle);
     if (allStartCoordinates.length != words.length) {
         console.log("Error");
         return;
-    }    
+    }
 
     // solver() finds solutions
     let solutions = [];
@@ -258,12 +268,18 @@ function crosswordSolver(stringPuzzle, words) {
     printPuzzle(solutions[0]);
 }
 
-crosswordSolver(puzzle, words);
+//crosswordSolver(puzzle, words);
+
+for (let i = 0; i < allPuzzles.length; i++) {
+    crosswordSolver(allPuzzles[i], allWordSets[i]);
+    if (i != allPuzzles.length - 1) console.log();
+}
 
 
 // TODO:
-// - validate inputs
+// x validate inputs
 // - automate testing
-// - go through audit questions
+// x go through audit questions
 // - are we following good practices (file structure, separation of concerns etc.)?
 // - should we use multiple files?
+// - Is it actually backtracking?
