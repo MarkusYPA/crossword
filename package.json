@@ -1,0 +1,20 @@
+{
+  "name": "crossword",
+  "version": "1.0.0",
+  "description": "Solves a crossword",
+  "main": "crossword.js",
+  "scripts": {
+    "start": "node crossword.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://01.gritlab.ax/git/mamberla/crossword.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}

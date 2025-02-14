@@ -17,8 +17,16 @@ function createArrayPuzzle(emptyPuzzle) {
     return arrayLines;
 }
 
-function validInput(arrayPuzzle, words) {
-    if (arrayPuzzle == null || arrayPuzzle.length == 0 || words == null || !Array.isArray(words) || words.length == 0) {
+function validInput(stringPuzzle, arrayPuzzle, words) {
+    if (
+        typeof stringPuzzle != 'string' ||
+        stringPuzzle === '' ||
+        arrayPuzzle == null ||
+        arrayPuzzle.length == 0 ||
+        words == null ||
+        !Array.isArray(words) ||
+        words.length == 0
+    ) {
         return false;
     }
 
@@ -33,7 +41,7 @@ function validInput(arrayPuzzle, words) {
         }
     }
 
-    // look for duplicate words
+    // duplicate words not allowed
     let chars = 0;
     for (let i = 0; i < words.length; i++) {
         for (let j = i + 1; j < words.length; j++) {
@@ -237,7 +245,7 @@ function printPuzzle(arrayPuzzle) {
         for (let char of line) {
             process.stdout.write(char);
         }
-        console.log();
+        console.log('');
     }
 }
 
@@ -245,7 +253,7 @@ function crosswordSolver(stringPuzzle, words) {
     // Puzzle to an array of character arrays for mutability
     let arrayPuzzle = createArrayPuzzle(stringPuzzle);
 
-    if (!validInput(arrayPuzzle, words)) {
+    if (!validInput(stringPuzzle, arrayPuzzle, words)) {
         console.log("Error");
         return;
     }
@@ -268,6 +276,8 @@ function crosswordSolver(stringPuzzle, words) {
     printPuzzle(solutions[0]);
 }
 
+module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits, updatePuzzle, uniqueSolution };
+
 //crosswordSolver(puzzle, words);
 
 for (let i = 0; i < allPuzzles.length; i++) {
@@ -278,8 +288,8 @@ for (let i = 0; i < allPuzzles.length; i++) {
 
 // TODO:
 // x validate inputs
-// - automate testing
+// x automate testing
 // x go through audit questions
 // - are we following good practices (file structure, separation of concerns etc.)?
 // - should we use multiple files?
-// - Is it actually backtracking?
+// x is it actually backtracking?

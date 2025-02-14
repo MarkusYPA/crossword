@@ -1,0 +1,14 @@
+Node.js project initialized with 'npm init -y' (-y for default values).
+It created a package.json -file to keep track of dependencies.
+
+For testing, Jest was installed with 'npm install jest'. This created a large folder
+node_modules/ which will be gitignored.
+
+package.json was updated with:
+  "scripts": {
+    "test": "jest"
+  },
+
+Dependencies (Jest) aren't included in repository. Install them with 'npm install'
+
+run tests with 'npm test -- -silent'  (silent to skip console-log()'s)
