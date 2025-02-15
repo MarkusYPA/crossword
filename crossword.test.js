@@ -67,10 +67,15 @@ test('find start coordinates 2', () => {
 
 
 // Word fits
-test('word fits', () => {
+test('word fits I', () => {
     expect(wordFits([[ 'a', '0', '0', '1' ],[ 'n', '.', '.', '0' ],[ 't', '0', '0', '0' ],[ 'a', '.', '.', '0' ]], 'alan', [ 0, 0 ])).toStrictEqual([ 'right' ]);
 });
-
+test('word fits II word out of bounds', () => {
+    expect(wordFits([[ 'a', '0', '0', '1' ],[ 'n', '.', '.', '0' ],[ 't', '0', '0', '0' ],[ 'a', '.', '.', '0' ]], 'alanx', [ 0, 0 ])).toStrictEqual([]);
+});
+test('word fits III word reaches banned cell ', () => {
+    expect(wordFits([[ 'a', '0', '0', '1', '.' ],[ 'n', '.', '.', '0', '.' ],[ 't', '0', '0', '0', '.' ],[ 'a', '.', '.', '0', '.' ]], 'alanx', [ 0, 0 ])).toStrictEqual([]);
+});
 
 // Update Puzzle
 test('puzzle update', () => {
@@ -89,7 +94,7 @@ test('puzzle update', () => {
 
 
 // Unique solutions
-test('unique solution I', () => {
+test('unique solution I no solutions yet', () => {
     expect(uniqueSolution([], [
         [ 'c', 'a', 's', 'a' ],
         [ 'i', '.', '.', 'l' ],
@@ -97,7 +102,7 @@ test('unique solution I', () => {
         [ 'o', '.', '.', 'n' ]
       ])).toBe(true);
 });
-test('unique solution II', () => {
+test('unique solution II found two already, matches one', () => {
     expect(uniqueSolution([
         [
           [ 'a', 'b', 'b', 'a' ],
@@ -117,4 +122,32 @@ test('unique solution II', () => {
         [ 'b', '.', '.', '.' ],
         [ 'a', '.', '.', '.' ]
       ])).toBe(false);
+});
+test('unique solution III found this already', () => {
+    expect(uniqueSolution([[
+        [ 'c', 'a', 's', 'a' ],
+        [ 'i', '.', '.', 'l' ],
+        [ 'a', 'n', 't', 'a' ],
+        [ 'o', '.', '.', 'n' ]
+      ]], [
+        [ 'c', 'a', 's', 'a' ],
+        [ 'i', '.', '.', 'l' ],
+        [ 'a', 'n', 't', 'a' ],
+        [ 'o', '.', '.', 'n' ]
+      ])).toBe(false);
+});
+test('unique solution IV found one different earlier', () => {
+    expect(uniqueSolution([
+        [
+          [ 'a', 'b', 'b', 'a' ],
+          [ 's', '.', '.', '.' ],
+          [ 's', '.', '.', '.' ],
+          [ 'a', '.', '.', '.' ]
+        ]
+      ], [
+        [ 'a', 's', 's', 'a' ],
+        [ 'b', '.', '.', '.' ],
+        [ 'b', '.', '.', '.' ],
+        [ 'a', '.', '.', '.' ]
+      ])).toBe(true);
 });

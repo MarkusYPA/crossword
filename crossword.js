@@ -33,7 +33,10 @@ function validInput(stringPuzzle, arrayPuzzle, words) {
     let lenRow = arrayPuzzle[0].length;
     let cells = 0;
     for (let row of arrayPuzzle) {
-        if (row.length != lenRow) return false;
+        if (row.length != lenRow) {
+            return false;
+        }
+
         for (let char of row) {
             if (char != '.' && char != '0' && char != '1' && char != '2') return false;
             if (char == '0' || char == '1' || char == '2') cells++;
@@ -255,4 +258,6 @@ module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits,
 // x go through audit questions
 // - are we following good practices (file structure, separation of concerns etc.)?
 // - should we use multiple files?
+// - should (Jest) testfile be in its own folder?
 // x is it actually backtracking?
+// - bigger test cases?

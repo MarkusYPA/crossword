@@ -1,6 +1,9 @@
 
-Update dependencies:
+install dependencies:
 npm install
+
+Update dependencies:
+npm update
 
 Unit test with Jest:
 npm test -- -silent
