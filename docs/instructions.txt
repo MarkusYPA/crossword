@@ -1,5 +1,5 @@
 
-install dependencies:
+Install dependencies:
 npm install
 
 Update dependencies:
@@ -13,7 +13,7 @@ node tests/run-audit.js
 npm run audits
 
 Run main program:
-node crossword.js
+node crosswordSolver.js
 npm run start
 
 
@@ -25,11 +25,12 @@ node_modules/ which will be gitignored.
 
 package.json was updated with:
   "scripts": {
-    "start": "node crossword.js",
-    "test": "jest"
-    "audits": "node run-audit.js"
+    "start": "node crosswordSolver.js",
+    "test": "jest",
+    "audits": "node tests/run-audit.js",
+    "bigs": "node tests/more-cases.js"
   },
 
-Dependencies (Jest) aren't included in repository. Install them with 'npm install'
+Dependencies (Jest) aren't included in the git repository. Install them with 'npm install'
 
-run tests with 'npm test -- -silent'  (silent to skip console-log()'s)
+Run unit tests with 'npm test -- -silent'  (silent to skip console-log()'s)

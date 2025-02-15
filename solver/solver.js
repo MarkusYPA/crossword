@@ -1,4 +1,66 @@
 
+// Slower function using regex
+function wordFitsX(puzzle, word, coordinates) {
+    let directions = [];
+    // try to fit word in both directions
+    for (let direction of ['right', 'down']) {
+
+
+        if (direction == 'right') {
+            // fail if word goes past puzzle edge
+            if (coordinates[1] + word.length > puzzle[0].length) continue;
+
+            // fail if cell before word exists and isn't '.' 
+            if (coordinates[1] > 0) {
+                if (puzzle[coordinates[0]][coordinates[1] - 1] != '.') continue;
+            }
+
+            // fail if cell after word exists and isn't '.' 
+            if (coordinates[1] + word.length < puzzle[0].length) {
+                if (puzzle[coordinates[0]][coordinates[1] + word.length] != '.') continue;
+            }
+
+        } else {
+            // fail if word goes past puzzle edge
+            if (coordinates[0] + word.length > puzzle.length) break;
+
+            // fail if cell before word exists and isn't '.' 
+            if (coordinates[0] > 0) {
+                if (puzzle[coordinates[0] - 1][coordinates[1]] != '.') break;
+            }
+
+            // fail if cell after word exists and isn't '.' 
+            if (coordinates[0] + word.length < puzzle.length) {
+                if (puzzle[coordinates[0] + word.length][coordinates[1]] != '.') break;
+            }
+        }        
+
+        // make regexp to check if word on puzzle matches
+        let pattern = word
+            .split('')
+            .map(char => `(?:\\d|${char})`) // Non-capturing group to avoid unnecessary memory usage
+            .join('');
+        const re = new RegExp(pattern); // Something like /(?:\d|c)(?:\d|a)(?:\d|s)(?:\d|a)/ - matches letters or numbers
+
+        let wordOnPuzzle = '';
+        if (direction == 'right') {
+            for (let i = 0; i < word.length; i++) {
+                wordOnPuzzle += puzzle[coordinates[0]][coordinates[1] + i];
+            }
+        } else {
+            for (let i = 0; i < word.length; i++) {
+                wordOnPuzzle += puzzle[coordinates[0] + i][coordinates[1]];
+            }
+        }
+
+        if (re.test(wordOnPuzzle)) {
+            directions.push(direction);
+        }
+    }
+
+    return directions;
+}
+
 function wordFits(puzzle, word, coordinates) {
     let directions = [];
     let beforeFirst = '';

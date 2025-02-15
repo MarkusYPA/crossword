@@ -38,6 +38,7 @@ function crosswordSolver(stringPuzzle, words) {
     solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
 
     if (solutions.length != 1) {
+        console.log(solutions.length)
         console.log("Error");
         return;
     }
