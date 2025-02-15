@@ -38,7 +38,9 @@ function validInput(stringPuzzle, arrayPuzzle, words) {
         }
 
         for (let char of row) {
-            if (char != '.' && char != '0' && char != '1' && char != '2') return false;
+            if (char != '.' && char != '0' && char != '1' && char != '2'){
+                return false;
+            }
             if (char == '0' || char == '1' || char == '2') cells++;
         }
     }
@@ -47,7 +49,9 @@ function validInput(stringPuzzle, arrayPuzzle, words) {
     let chars = 0;
     for (let i = 0; i < words.length; i++) {
         for (let j = i + 1; j < words.length; j++) {
-            if (words[i] == words[j]) return false;
+            if (words[i] == words[j]){
+                return false;
+            } 
         }
         for (const c of words[i]) chars++;
     }
@@ -241,6 +245,7 @@ function crosswordSolver(stringPuzzle, words) {
     solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
 
     if (solutions.length != 1) {
+        console.log(solutions.length);
         console.log("Error");
         return;
     }
@@ -260,4 +265,4 @@ module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits,
 // - should we use multiple files?
 // - should (Jest) testfile be in its own folder?
 // x is it actually backtracking?
-// - bigger test cases?
+// x bigger test cases?
