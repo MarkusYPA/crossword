@@ -1,5 +1,4 @@
 'use strict';
-const { allPuzzles, allWordSets } = require('./audit-values');
 
 const puzzle = '2001\n0..0\n1000\n0..0';
 const words = ['casa', 'alan', 'ciao', 'anta'];
@@ -84,92 +83,62 @@ function wordFits(puzzle, word, coordinates) {
     let beforeFirst = '';
     let afterLast = '';
 
-    // horizontal and vertical tries are quite repetitive. Can we improve?
+    // try to fit word in both directions
+    for (let direction of ['right', 'down']) {
 
-    // try horizontal (right)
-    let success = true;
-    for (let i = 0; i < word.length; i++) {
-        let row = coordinates[0];
-        let col = coordinates[1] + i;
-        if (row > puzzle.length - 1 || col > puzzle[0].length) {
-            success = false;
-            break;
-        }
+        // multipliers for different directions
+        let rowMult = 0;
+        let colMult = 0;
+        if (direction == 'right') colMult = 1;
+        if (direction == 'down') rowMult = 1;
 
-        let cell = puzzle[row][col];
-        if (!(cell == 2 || cell == 1 || cell == 0 || cell == word[i])) {
-            success = false;
-        }
+        let success = true;
 
-        // save value of cell before word
-        if (i == 0) {
-            if (col - 1 < 0) {
-                beforeFirst = undefined;
-            } else {
-                beforeFirst = puzzle[row][col - 1]
+        // try each letter individually
+        for (let i = 0; i < word.length; i++) {
+            let row = coordinates[0] + i * rowMult;    // changes at 'down'
+            let col = coordinates[1] + i * colMult;    // changes at 'right'
+
+            // fail if word goes past edge
+            if (row > puzzle.length - 1 || col > puzzle[0].length) {
+                success = false;
+                break;
             }
-        }
 
-        // save value of cell after word
-        if (i == word.length - 1) {
-            if (col + 1 > puzzle[0].length - 1) {
-                afterLast = undefined;
-            } else {
-                afterLast = puzzle[row][col + 1]
+            // fail if cell value isn't one of the allowed
+            let cell = puzzle[row][col];
+            if (!(cell == 2 || cell == 1 || cell == 0 || cell == word[i])) {
+                success = false;
+                break;
             }
+
+            // save value of cell before word
+            if (i == 0) {
+                if (col - 1 * colMult < 0 || row - 1 * rowMult < 0) {
+                    beforeFirst = undefined;
+                } else {
+                    beforeFirst = puzzle[row - 1 * rowMult][col - 1 * colMult]
+                }
+            }
+
+            // save value of cell after word            
+            if (i == word.length - 1) {
+                if (col + 1 * colMult > puzzle[0].length - 1 || row + 1 * rowMult > puzzle.length - 1) {
+                    afterLast = undefined;
+                } else {
+                    afterLast = puzzle[row + 1 * rowMult][col + 1 * colMult]
+                }
+            }
+
         }
-    }
-    // No fit if theres room before or after the word
-    if (!(beforeFirst == '.' || beforeFirst == undefined) || !(afterLast == '.' || afterLast == undefined)) {
-        success = false;
-    }
-
-    if (success) {
-        directions.push('right')
-    }
-
-    // try vertical (down)
-    beforeFirst = '';
-    afterLast = '';
-    success = true;
-    for (let i = 0; i < word.length; i++) {
-        let row = coordinates[0] + i;
-        let col = coordinates[1];
-        if (row > puzzle.length - 1 || col > puzzle[0].length) {
-            success = false;
-            break;
-        }
-
-        let cell = puzzle[row][col];
-        if (!(cell == 2 || cell == 1 || cell == 0 || cell == word[i])) {
+        // fail if usable cells before or after word
+        if (!(beforeFirst == '.' || beforeFirst == undefined) || !(afterLast == '.' || afterLast == undefined)) {
             success = false;
         }
 
-        // save value of cell before word
-        if (i == 0) {
-            if (row - 1 < 0) {
-                beforeFirst = undefined;
-            } else {
-                beforeFirst = puzzle[row - 1][col]
-            }
+        if (success) {
+            directions.push(direction)
         }
-
-        // save value of cell after word
-        if (i == word.length - 1) {
-            if (row + 1 > puzzle.length - 1) {
-                afterLast = undefined;
-            } else {
-                afterLast = puzzle[row + 1][col]
-            }
-        }
-    }
-    // No fit if theres room before or after the word
-    if (!(beforeFirst == '.' || beforeFirst == undefined) || !(afterLast == '.' || afterLast == undefined)) {
-        success = false;
-    }
-
-    if (success) {
-        directions.push('down')
     }
 
     return directions;
@@ -276,15 +245,9 @@ function crosswordSolver(stringPuzzle, words) {
     printPuzzle(solutions[0]);
 }
 
-module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits, updatePuzzle, uniqueSolution };
+module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits, updatePuzzle, uniqueSolution, crosswordSolver};
 
 //crosswordSolver(puzzle, words);
-
-for (let i = 0; i < allPuzzles.length; i++) {
-    crosswordSolver(allPuzzles[i], allWordSets[i]);
-    if (i != allPuzzles.length - 1) console.log();
-}
-
 
 // TODO:
 // x validate inputs

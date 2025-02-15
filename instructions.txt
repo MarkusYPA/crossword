@@ -1,3 +1,19 @@
+
+Update dependencies:
+npm install
+
+Unit test with Jest:
+npm test -- -silent
+
+Try audit questions:
+node run-audit.js
+npm run audit
+
+Run main program:
+node crossword.js
+npm run start
+
+
 Node.js project initialized with 'npm init -y' (-y for default values).
 It created a package.json -file to keep track of dependencies.
 
@@ -6,7 +22,9 @@ node_modules/ which will be gitignored.
 
 package.json was updated with:
   "scripts": {
+    "start": "node crossword.js",
     "test": "jest"
+    "audit": "node run-audit.js"
   },
 
 Dependencies (Jest) aren't included in repository. Install them with 'npm install'

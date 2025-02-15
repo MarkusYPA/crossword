@@ -5,7 +5,8 @@
   "main": "crossword.js",
   "scripts": {
     "start": "node crossword.js",
-    "test": "jest"
+    "test": "jest",
+    "audit": "node run-audit.js"
   },
   "repository": {
     "type": "git",
