@@ -1,4 +1,4 @@
-const { crosswordSolver } = require('./crossword');
+const { crosswordSolver } = require('../crosswordSolver');
 
 const moreTitles = [];
 const morePuzzles = [];

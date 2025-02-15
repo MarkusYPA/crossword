@@ -1,4 +1,5 @@
-const { createArrayPuzzle, validInput, getStartCoordinates, wordFits, updatePuzzle, uniqueSolution } = require('./crossword');
+const { createArrayPuzzle, validInput, getStartCoordinates } = require('../crosswordSolver');
+const { wordFits, updatePuzzle, uniqueSolution } = require('../solver/solver');
 const { allPuzzles, allWordSets } = require('./audit-values');
 
 

@@ -1,89 +1,3 @@
-'use strict';
-
-const puzzle = '2001\n0..0\n1000\n0..0';
-const words = ['casa', 'alan', 'ciao', 'anta'];
-
-function createArrayPuzzle(emptyPuzzle) {
-    let stringLines = String(emptyPuzzle).split(/\r?\n/);
-    let arrayLines = [];
-    for (let strLine of stringLines) {
-        let arrayLine = [];
-        for (let char of strLine) {
-            arrayLine.push(char);
-        }
-        arrayLines.push(arrayLine);
-    }
-    return arrayLines;
-}
-
-function validInput(stringPuzzle, arrayPuzzle, words) {
-    if (
-        typeof stringPuzzle != 'string' ||
-        stringPuzzle === '' ||
-        arrayPuzzle == null ||
-        arrayPuzzle.length == 0 ||
-        words == null ||
-        !Array.isArray(words) ||
-        words.length == 0
-    ) {
-        return false;
-    }
-
-    // row lengths must be equal and rows can include only '.', '0', '1' or '2'
-    let lenRow = arrayPuzzle[0].length;
-    let cells = 0;
-    for (let row of arrayPuzzle) {
-        if (row.length != lenRow) {
-            return false;
-        }
-
-        for (let char of row) {
-            if (char != '.' && char != '0' && char != '1' && char != '2'){
-                return false;
-            }
-            if (char == '0' || char == '1' || char == '2') cells++;
-        }
-    }
-
-    // duplicate words not allowed
-    let chars = 0;
-    for (let i = 0; i < words.length; i++) {
-        for (let j = i + 1; j < words.length; j++) {
-            if (words[i] == words[j]){
-                return false;
-            } 
-        }
-        for (const c of words[i]) chars++;
-    }
-
-    // clearly too many cells
-    if (cells > chars) {
-        return false;
-    }
-
-    return true;
-}
-
-function getStartCoordinates(puzzle) {
-    let starts = [];    // [row, column] pairs in that order
-
-    for (let i = 0; i < puzzle.length; i++) {
-        for (let j = 0; j < puzzle[i].length; j++) {
-
-            let value = puzzle[i][j];
-            if (value != 0 && value != '.') {
-
-                // some are added multiple times
-                while (value > 0) {
-                    starts.push([i, j]);
-                    value--;
-                }
-            }
-        }
-    }
-
-    return starts;
-}
 
 function wordFits(puzzle, word, coordinates) {
     let directions = [];
@@ -182,7 +96,6 @@ function uniqueSolution(solutions, puzzle) {
     return true;
 }
 
-// move solver inside crosswordSolver to not have to pass 'solutions' and 'allStartCoordinates' to it?
 function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates) {
 
     // Too many solutions, abort
@@ -216,53 +129,4 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     }
 }
 
-function printPuzzle(arrayPuzzle) {
-    for (let line of arrayPuzzle) {
-        for (let char of line) {
-            process.stdout.write(char);
-        }
-        console.log('');
-    }
-}
-
-function crosswordSolver(stringPuzzle, words) {
-    // Puzzle to an array of character arrays for mutability
-    let arrayPuzzle = createArrayPuzzle(stringPuzzle);
-
-    if (!validInput(stringPuzzle, arrayPuzzle, words)) {
-        console.log("Error");
-        return;
-    }
-
-    let allStartCoordinates = getStartCoordinates(arrayPuzzle);
-    if (allStartCoordinates.length != words.length) {
-        console.log("Error");
-        return;
-    }
-
-    // solver() finds solutions
-    let solutions = [];
-    solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
-
-    if (solutions.length != 1) {
-        console.log(solutions.length);
-        console.log("Error");
-        return;
-    }
-
-    printPuzzle(solutions[0]);
-}
-
-module.exports = { createArrayPuzzle, validInput, getStartCoordinates, wordFits, updatePuzzle, uniqueSolution, crosswordSolver};
-
-//crosswordSolver(puzzle, words);
-
-// TODO:
-// x validate inputs
-// x automate testing
-// x go through audit questions
-// - are we following good practices (file structure, separation of concerns etc.)?
-// - should we use multiple files?
-// - should (Jest) testfile be in its own folder?
-// x is it actually backtracking?
-// x bigger test cases?
+module.exports = { solver, wordFits, updatePuzzle, uniqueSolution};

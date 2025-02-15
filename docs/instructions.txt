@@ -9,8 +9,8 @@ Unit test with Jest:
 npm test -- -silent
 
 Try audit questions:
-node run-audit.js
-npm run audit
+node tests/run-audit.js
+npm run audits
 
 Run main program:
 node crossword.js
@@ -27,7 +27,7 @@ package.json was updated with:
   "scripts": {
     "start": "node crossword.js",
     "test": "jest"
-    "audit": "node run-audit.js"
+    "audits": "node run-audit.js"
   },
 
 Dependencies (Jest) aren't included in repository. Install them with 'npm install'

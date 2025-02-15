@@ -4,9 +4,10 @@
   "description": "Solves a crossword",
   "main": "crossword.js",
   "scripts": {
-    "start": "node crossword.js",
+    "start": "node crosswordSolver.js",
     "test": "jest",
-    "audit": "node run-audit.js"
+    "audits": "node tests/run-audit.js",
+    "bigs": "node tests/more-cases.js"
   },
   "repository": {
     "type": "git",
