@@ -1,0 +1,36 @@
+
+Install dependencies:
+npm install
+
+Update dependencies:
+npm update
+
+Unit test with Jest:
+npm test -- -silent
+
+Try audit questions:
+node tests/run-audit.js
+npm run audits
+
+Run main program:
+node crosswordSolver.js
+npm run start
+
+
+Node.js project initialized with 'npm init -y' (-y for default values).
+It created a package.json -file to keep track of dependencies.
+
+For testing, Jest was installed with 'npm install jest'. This created a large folder
+node_modules/ which will be gitignored.
+
+package.json was updated with:
+  "scripts": {
+    "start": "node crosswordSolver.js",
+    "test": "jest",
+    "audits": "node tests/run-audit.js",
+    "bigs": "node tests/more-cases.js"
+  },
+
+Dependencies (Jest) aren't included in the git repository. Install them with 'npm install'
+
+Run unit tests with 'npm test -- -silent'  (silent to skip console-log()'s)

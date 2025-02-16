@@ -1,0 +1,290 @@
+'use strict';
+
+const { crosswordSolver } = require('../src/crosswordSolver');
+
+const moreTitles = [];
+const morePuzzles = [];
+const moreWordSets = [];
+
+moreTitles.push('Gothic 52 words');
+morePuzzles.push(`1............1100000...1.1..1.
+0.1.10100001..0.......1000000.
+0.0...0....10000000.1..0.0..0.
+0.0.10000000..0....10000001.0.
+0.0...0....0...1....0.....0.0.
+10001.0..100000000..0.101000..
+....0.0....0...0....0...0.0.1.
+1..1000000.0.1000000000.0.0.0.
+0...0.0....0...0....0...0...0.
+0...0..1....1000.100000000..0.
+0..10000000....0....0...0...0.
+0...0..0...1.1000000.1..0...0.
+10100..0...0...0....100000000.
+0.0...100000000000...0..0...0.
+0.0..1.0...0.........0........
+.10000000..0......1000000.1.1.
+..0..0.0.100000000...0....0.0.
+100000.0...0.........10000000.
+..0....0..100000000000....0.0.
+.100000000.0.........0..1.0.0.
+..0........100000000....0.0.0.
+...........0.........10000000.
+....10000000000000......0.0.0.
+...........0......1000000.....`
+);
+moreWordSets.push([
+    'gothic',
+    'foggy',
+    'fogbound',
+    'crypt',
+    'mournful',
+    'gruesome',
+    'sibilant',
+    'threnody',
+    'crimson',
+    'delirium',
+    'agony',
+    'portrait',
+    'eldritch',
+    'cloaked',
+    'purgatory',
+    'obsession',
+    'lurk',
+    'premonition',
+    'decrepit',
+    'dismal',
+    'doppelgänger',
+    'foreboding',
+    'veil',
+    'aberration',
+    'monomania',
+    'echo',
+    'hallucination',
+    'lamplight',
+    'rattling',
+    'howl',
+    'torment',
+    'whisper',
+    'nocturnal',
+    'omen',
+    'claustrophobic',
+    'nightmare',
+    'pallor',
+    'inexplicable',
+    'ether',
+    'labyrinth',
+    'ghoul',
+    'tombstone',
+    'sepulcher',
+    'heartbeat',
+    'forlorn',
+    'insanity',
+    'hysteria',
+    'gargoyle',
+    'sorcery',
+    'shackles',
+    'phantasm',
+    'decay',
+]);
+
+moreTitles.push('Gothic 60 words');
+morePuzzles.push(`........10000001......1.....1000001.
+...............0..100000..........0.
+..........1....0......0.....1001000.
+......1.100000000..2000000.....0..0.
+....1.0...0....0...0..0........0..0.
+....0.0...0....0..10000000..1000010.
+...10000000000000..0......1....0.0..
+1.1.0.0...0....0.10000000.0..1.0.0..
+0.0.0.0.1.0........0......0.1000000.
+0.0.0.0.0.0..1.1.1.0..1...0..0...0..
+0.0.100000000000.0.10000100..0..1...
+0.0.0.0.0.0..0.0.0....0.0....0..0...
+0.0.0...0.0.100000....0.0....0..0.1.
+11000...0....0.0.100000000.1.0..0.0.
+.0..0.1.0....0...0....0....10010000.
+.0..0.0.0.100000000...0..1.0..0.0.0.
+.0..0.0.0....0...0.1.10000000.0.0.0.
+.0.1..0.0....0..10000.0..0.0..0.0.0.
+...0.1000000001....0.....0.0..0...0.
+1100..0.0.....0....0.....0.0..0..1..
+.0.0..0.....10000.10000000.10000000.
+.0.10000000...0....0.....0.......0..
+.0.0.......1000.1000000.1000000..0..`
+);
+moreWordSets.push([
+    'cryptic',
+    'hallucination',
+    'fogbound',
+    'claustrophobic',
+    'sepulcher',
+    'sorcery',
+    'purgatory',
+    'premonition',
+    'crypt',
+    'inexplicable',
+    'raven',
+    'decrepit',
+    'doppelgänger',
+    'gothic',
+    'veil',
+    'gargoyle',
+    'belfry',
+    'echo',
+    'aberration',
+    'twilight',
+    'torment',
+    'dismal',
+    'foreboding',
+    'sibilant',
+    'chilling',
+    'revenant',
+    'wraith',
+    'eerie',
+    'nocturnal',
+    'nightmare',
+    'ominous',
+    'threnody',
+    'tombstone',
+    'specter',
+    'heartbeat',
+    'ghoul',
+    'agony',
+    'foggy',
+    'cadaver',
+    'cloaked',
+    'decay',
+    'howl',
+    'shroud',
+    'omen',
+    'mansion',
+    'shackles',
+    'charred',
+    'rattling',
+    'midnight',
+    'moonlit',
+    'ether',
+    'phantasm',
+    'eldritch',
+    'hysteria',
+    'delirium',
+    'thunder',
+    'whisper',
+    'phantom',
+    'mournful',
+    'lurk',
+]);
+
+
+moreTitles.push('Gothic 70 words');
+morePuzzles.push(`1.1...1.1.....1.11000000........100010..
+0.10000000..1.0..0......11000000....0...
+0.0...0.0...0.100000000..0..........0...
+0.0.1.0.0...0.0..0.....1.0.......100001.
+0..10000001.0.0..0..10000000........0.0.
+0...0.0.0.0.0....0.1...0.0......1...0.0.
+1000000.0.10000100000..0.0...11000010.0.
+....0.0...0.0..0.0.0..100000..0.0..0..0.
+.1........0...1000.0...0.0....1000.0..0.
+100000010000...0.0.0...0..1...0.0..0....
+.0.....0..0..1.0..100000000...0.0..0....
+.0..1..0..0..0.0...0......0...0.0..0..1.
+.0.1000000000000...0......0...0.0..0..0.
+.0..0..0..0..0.0...0..100000010..100000.
+.0..0..0..0..0.0...0.1....0..0........0.
+.0..0..0..0..0.......0.100000000.110000.
+..1000000...10000010.0....0..0....0.....
+.1..0..0..1..0....0..0..100000000.0.....
+.0..0..0..0....11000000......0....0.1...
+.0..0.10000000..0.0..0.10010.10000000...
+.0.1...0..0.....0.0..0....0..0....0.0...
+100000000.0.10000.0......10000000.0.0...
+.0.0...0..0.....1000000...0.........0...
+.0.1000.100000..0.0......10000.100000...`
+);
+moreWordSets.push([
+'phantom',
+'omen',
+'midnight',
+'sibilant',
+'mansion',
+'secluded',
+'eerie',
+'thunder',
+'inexplicable',
+'insanity',
+'charred',
+'doppelgänger',
+'agony',
+'hallucination',
+'labyrinth',
+'claustrophobic',
+'premonition',
+'obsession',
+'rattling',
+'aberration',
+'crimson',
+'forlorn',
+'monomania',
+'nocturnal',
+'echo',
+'twilight',
+'howl',
+'foreboding',
+'immortal',
+'fogbound',
+'chilling',
+'portrait',
+'hysteria',
+'lurk',
+'moonlit',
+'tombstone',
+'threnody',
+'wraith',
+'gothic',
+'belfry',
+'shackles',
+'ghoul',
+'decrepit',
+'hollow',
+'sepulcher',
+'lamplight',
+'gruesome',
+'sorcery',
+'revenant',
+'recluse',
+'asylum',
+'delirium',
+'nightmare',
+'ominous',
+'veil',
+'purgatory',
+'mournful',
+'miasma',
+'heartbeat',
+'raven',
+'ether',
+'phantasm',
+'pallor',
+'eldritch',
+'scythe',
+'crypt',
+'cryptic',
+'dirge',
+'shiver',
+'parlor'
+]);
+
+
+let moreCases = [];
+for (let i = 0; i < moreTitles.length; i++) {
+    moreCases.push({ title: moreTitles[i], puzzle: morePuzzles[i], words: moreWordSets[i] })
+}
+
+for (let i = 0; i < moreCases.length; i++) {
+    console.log('\n' + moreCases[i].title);
+    crosswordSolver(moreCases[i].puzzle, moreCases[i].words);
+}
+
+
+
