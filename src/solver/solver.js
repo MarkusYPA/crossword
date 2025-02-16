@@ -28,34 +28,24 @@ function updatePuzzle(puzzle, word, coordinates, direction) {
     return newPuzzle;
 }
 
-function uniqueSolution(solutions, puzzle) {
-    let jsonString = JSON.stringify(puzzle);
-    for (let sol of solutions) {
-        if (jsonString == JSON.stringify(sol)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 function getWordOnPuzzle(puzzle, startCoords) {
     let word = '';
     const coords = startCoords.coordinates;
 
     if (startCoords.direction == 'down') {
         for (let i = 0; i < startCoords.length; i++) {
-            word += puzzle[coords[0]+i][coords[1]];
+            word += puzzle[coords[0] + i][coords[1]];
         }
     } else {
         for (let i = 0; i < startCoords.length; i++) {
-            word += puzzle[coords[0]][coords[1]+i];
+            word += puzzle[coords[0]][coords[1] + i];
         }
     }
 
     return word;
 }
 
-function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates) {
+function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
 
     // Too many solutions, abort
     if (solutions.length > 1) {
@@ -64,15 +54,12 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
 
     // Solution complete, end here        
     if (words.length == 0) {
-        // Start positions with '2' will spawn duplicate solutions so check uniqueness
-        if (uniqueSolution(solutions, currentPuzzle)) {
-            solutions.push(currentPuzzle);
-        }
+        solutions.push(currentPuzzle);
         return;
     }
 
     // Words remain, keep going
-    let startCoords = allStartCoordinates[startIndex];
+    let startCoords = startPositions[startIndex];
     startIndex++;
 
     // Check words compatibilities with this
@@ -83,10 +70,10 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
         if (words[i].length == startCoords.length && wordFits(words[i], wordOnPuzzle)) {
             let newPuzzle = updatePuzzle(currentPuzzle, words[i], startCoords.coordinates, startCoords.direction); // write word into current puzzle
             let newWords = words.slice(0, i).concat(words.slice(i + 1)) // remove word from array
-            solver(newPuzzle, newWords, startIndex, solutions, allStartCoordinates);
+            solver(newPuzzle, newWords, startIndex, solutions, startPositions);
             continue;
         }
     }
 }
 
-module.exports = { solver, wordFits, updatePuzzle, uniqueSolution };
+module.exports = { solver, wordFits, updatePuzzle };

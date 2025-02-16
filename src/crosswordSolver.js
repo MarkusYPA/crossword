@@ -1,6 +1,6 @@
 'use strict';
 
-const { createArrayPuzzle, validInput, getStartCoordinates } = require('./solver/parser');
+const { createArrayPuzzle, validInput, getStartPositions } = require('./solver/parser');
 const { solver } = require('./solver/solver');
 
 const puzzle = '2001\n0..0\n1000\n0..0';
@@ -26,8 +26,8 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
-    let allStartCoordinates = getStartCoordinates(arrayPuzzle);
-    if (allStartCoordinates.length != words.length) {
+    let startPositions = getStartPositions(arrayPuzzle);
+    if (startPositions.length != words.length) {
         console.log("Error");
         return;
     }
@@ -36,7 +36,7 @@ function crosswordSolver(stringPuzzle, words) {
 
     // solver() finds solutions
     let solutions = [];
-    solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
+    solver(arrayPuzzle, words, 0, solutions, startPositions)
 
     if (solutions.length != 1) {
         console.log("Error");
@@ -46,4 +46,4 @@ function crosswordSolver(stringPuzzle, words) {
     printPuzzle(solutions[0]);
 }
 
-module.exports = { createArrayPuzzle, validInput, getStartCoordinates, crosswordSolver };
+module.exports = { crosswordSolver };

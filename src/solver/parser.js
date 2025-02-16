@@ -67,7 +67,7 @@ function validInput(stringPuzzle, arrayPuzzle, words) {
     return true;
 }
 
-function getStartCoordinates(puzzle) {
+function getStartPositions(puzzle) {
     let starts = [];    // [{[row, column], length, direction}, ...]
 
     for (let i = 0; i < puzzle.length; i++) {
@@ -114,7 +114,7 @@ function getStartCoordinates(puzzle) {
                     }
 
                     // store starting postition with length and direction of expected word
-                    if (length > 1) { // should length 1 be allowed?
+                    if (length > 1) {
                         starts.push({ coordinates: coordinates, length: length, direction: direction });
                     }
 
@@ -126,4 +126,4 @@ function getStartCoordinates(puzzle) {
     return starts;
 }
 
-module.exports = { createArrayPuzzle, validInput, getStartCoordinates };
+module.exports = { createArrayPuzzle, validInput, getStartPositions };

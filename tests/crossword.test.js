@@ -1,5 +1,5 @@
-const { createArrayPuzzle, validInput, getStartCoordinates } = require('../src/crosswordSolver');
-const { wordFits, updatePuzzle, uniqueSolution } = require('../src/solver/solver');
+const { createArrayPuzzle, validInput, getStartPositions } = require('../src/solver/parser');
+const { wordFits, updatePuzzle } = require('../src/solver/solver');
 const { allPuzzles, allWordSets } = require('./audit-values');
 
 
@@ -55,7 +55,7 @@ test('try if inputs 11 no solutions are valid', () => {
 
 // Start Coordinates
 test('find start coordinates 0', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[0]))).toStrictEqual([
+    expect(getStartPositions(createArrayPuzzle(allPuzzles[0]))).toStrictEqual([
         { coordinates: [ 0, 0 ], length: 4, direction: 'right' },
         { coordinates: [ 0, 0 ], length: 4, direction: 'down' },
         { coordinates: [ 0, 3 ], length: 4, direction: 'down' },
@@ -64,7 +64,7 @@ test('find start coordinates 0', () => {
 });
 
 test('find start coordinates 1', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[1]))).toStrictEqual([
+    expect(getStartPositions(createArrayPuzzle(allPuzzles[1]))).toStrictEqual([
         { coordinates: [ 0, 3 ], length: 3, direction: 'down' },
         { coordinates: [ 1, 2 ], length: 10, direction: 'right' },
         { coordinates: [ 1, 8 ], length: 8, direction: 'down' },
@@ -81,7 +81,7 @@ test('find start coordinates 1', () => {
 });
 
 test('find start coordinates 2', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[2]))).toStrictEqual([
+    expect(getStartPositions(createArrayPuzzle(allPuzzles[2]))).toStrictEqual([
         { coordinates: [ 0, 2 ], length: 7, direction: 'down' },
         { coordinates: [ 0, 4 ], length: 5, direction: 'down' },
         { coordinates: [ 0, 7 ], length: 10, direction: 'down' },
@@ -117,64 +117,4 @@ test('puzzle update', () => {
         [ 'a', '0', '0', '0' ],
         [ 'n', '.', '.', '0' ]
       ]);
-});
-
-
-// Unique solutions
-test('unique solution I no solutions yet', () => {
-    expect(uniqueSolution([], [
-        [ 'c', 'a', 's', 'a' ],
-        [ 'i', '.', '.', 'l' ],
-        [ 'a', 'n', 't', 'a' ],
-        [ 'o', '.', '.', 'n' ]
-      ])).toBe(true);
-});
-test('unique solution II found two already, matches one', () => {
-    expect(uniqueSolution([
-        [
-          [ 'a', 'b', 'b', 'a' ],
-          [ 's', '.', '.', '.' ],
-          [ 's', '.', '.', '.' ],
-          [ 'a', '.', '.', '.' ]
-        ],
-        [
-          [ 'a', 's', 's', 'a' ],
-          [ 'b', '.', '.', '.' ],
-          [ 'b', '.', '.', '.' ],
-          [ 'a', '.', '.', '.' ]
-        ]
-      ], [
-        [ 'a', 's', 's', 'a' ],
-        [ 'b', '.', '.', '.' ],
-        [ 'b', '.', '.', '.' ],
-        [ 'a', '.', '.', '.' ]
-      ])).toBe(false);
-});
-test('unique solution III found this already', () => {
-    expect(uniqueSolution([[
-        [ 'c', 'a', 's', 'a' ],
-        [ 'i', '.', '.', 'l' ],
-        [ 'a', 'n', 't', 'a' ],
-        [ 'o', '.', '.', 'n' ]
-      ]], [
-        [ 'c', 'a', 's', 'a' ],
-        [ 'i', '.', '.', 'l' ],
-        [ 'a', 'n', 't', 'a' ],
-        [ 'o', '.', '.', 'n' ]
-      ])).toBe(false);
-});
-test('unique solution IV found one different earlier', () => {
-    expect(uniqueSolution([
-        [
-          [ 'a', 'b', 'b', 'a' ],
-          [ 's', '.', '.', '.' ],
-          [ 's', '.', '.', '.' ],
-          [ 'a', '.', '.', '.' ]
-        ]
-      ], [
-        [ 'a', 's', 's', 'a' ],
-        [ 'b', '.', '.', '.' ],
-        [ 'b', '.', '.', '.' ],
-        [ 'a', '.', '.', '.' ]
-      ])).toBe(true);
 });
