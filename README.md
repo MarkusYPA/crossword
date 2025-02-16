@@ -20,9 +20,9 @@ o..n
 
 ### How to run
 
-Both of these will run the main program
+Both of these will run the main program from the project root folder
 ```
-node crosswordSolver.js
+node src/crosswordSolver.js
 npm run start
 ```
 
