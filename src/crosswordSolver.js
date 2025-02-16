@@ -32,7 +32,7 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
-    // 2/4 Put words into map where key is length and value array of words
+    words.sort((a, b) => a.length - b.length);
 
     // solver() finds solutions
     let solutions = [];

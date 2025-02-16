@@ -1,5 +1,5 @@
-const { createArrayPuzzle, validInput, getStartCoordinates } = require('../crosswordSolver');
-const { wordFits, updatePuzzle, uniqueSolution } = require('../solver/solver');
+const { createArrayPuzzle, validInput, getStartCoordinates } = require('../src/crosswordSolver');
+const { wordFits, updatePuzzle, uniqueSolution } = require('../src/solver/solver');
 const { allPuzzles, allWordSets } = require('./audit-values');
 
 

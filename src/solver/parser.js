@@ -126,6 +126,4 @@ function getStartCoordinates(puzzle) {
     return starts;
 }
 
-
-
 module.exports = { createArrayPuzzle, validInput, getStartCoordinates };

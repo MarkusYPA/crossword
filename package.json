@@ -4,7 +4,7 @@
   "description": "Solves a crossword",
   "main": "crossword.js",
   "scripts": {
-    "start": "node crosswordSolver.js",
+    "start": "node src/crosswordSolver.js",
     "test": "jest",
     "audits": "node tests/run-audit.js",
     "bigs": "node tests/more-cases.js"
