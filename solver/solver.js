@@ -50,7 +50,13 @@ function getWordOnPuzzle(puzzle, startCoords) {
     return word;
 }
 
-function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates) {   
+function shallowCopyMap(wordMap) {
+    return new Map(
+        [...wordMap].map(([len, words]) => [len, [...words]])
+    );
+}
+
+function solver(currentPuzzle, wordMap, startIndex, solutions, allStartCoordinates) {   
 
     // Too many solutions, abort
     if (solutions.length > 1) {
@@ -58,9 +64,9 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     }
 
     // Solution complete, end here        
-    if (words.length == 0) {
+    if (startIndex >= allStartCoordinates.length) {
         // Start positions with '2' will spawn duplicate solutions so check uniqueness
-        if (uniqueSolution(solutions, currentPuzzle)) {
+        if (uniqueSolution(solutions, currentPuzzle)) { // Is this still necessary?
             solutions.push(currentPuzzle);
         }
         return;
@@ -70,17 +76,22 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     let startCoords = allStartCoordinates[startIndex];
     startIndex++;
 
-    // 4/4 Only try words that have correct length
+    // Try only words that have correct length
+    let words = wordMap.get(startCoords.length);
 
     // Check words compatibilities with this
     let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startCoords);
+
     for (let i = 0; i < words.length; i++) {
 
         // When it fits, recur with updated values
-        if (words[i].length == startCoords.length && wordFits(words[i], wordOnPuzzle)) {
-            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startCoords.coordinates, startCoords.direction); // write word into current puzzle
-            let newWords = words.slice(0, i).concat(words.slice(i + 1)) // remove word from array
-            solver(newPuzzle, newWords, startIndex, solutions, allStartCoordinates);
+        if (wordFits(words[i], wordOnPuzzle)) {
+            // write word into current puzzle
+            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startCoords.coordinates, startCoords.direction);
+            // remove word
+            let newWordMap = shallowCopyMap(wordMap)
+            newWordMap.set(startCoords.length, words.slice(0, i).concat(words.slice(i + 1)))
+            solver(newPuzzle, newWordMap, startIndex, solutions, allStartCoordinates);
         }
     }
 }

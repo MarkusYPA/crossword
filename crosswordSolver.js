@@ -32,13 +32,12 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
-    // 2/4 Put words into map where key is length and value array of words
+    // Put words into map where key is length and value array of words
     let wordMap = makeWordMap(words);
-    console.log(wordMap);
 
     // solver() finds solutions
     let solutions = [];
-    solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
+    solver(arrayPuzzle, wordMap, 0, solutions, allStartCoordinates)
 
     if (solutions.length != 1) {
         console.log("Error");
