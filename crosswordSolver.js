@@ -8,7 +8,6 @@ const words = ['casa', 'alan', 'ciao', 'anta'];
 
 //crosswordSolver(puzzle, words);
 
-
 function printPuzzle(arrayPuzzle) {
     for (let line of arrayPuzzle) {
         for (let char of line) {
@@ -33,12 +32,13 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
+    // 2/4 Put words into map where key is length and value array of words
+
     // solver() finds solutions
     let solutions = [];
     solver(arrayPuzzle, words, 0, solutions, allStartCoordinates)
 
     if (solutions.length != 1) {
-        console.log(solutions.length)
         console.log("Error");
         return;
     }

@@ -1,130 +1,13 @@
 
-// Slower function using regex
-function wordFitsX(puzzle, word, coordinates) {
-    let directions = [];
-    // try to fit word in both directions
-    for (let direction of ['right', 'down']) {
+function wordFits(word, wordOnPuzzle) {
+    // make regexp to check if word on puzzle matches
+    let pattern = String(word)
+        .split('')
+        .map(char => `(?:\\d|${char})`) // Non-capturing group to avoid unnecessary memory usage
+        .join('');
+    const re = new RegExp(pattern); // Something like /(?:\d|c)(?:\d|a)(?:\d|s)(?:\d|a)/ - matches letters or numbers
 
-
-        if (direction == 'right') {
-            // fail if word goes past puzzle edge
-            if (coordinates[1] + word.length > puzzle[0].length) continue;
-
-            // fail if cell before word exists and isn't '.' 
-            if (coordinates[1] > 0) {
-                if (puzzle[coordinates[0]][coordinates[1] - 1] != '.') continue;
-            }
-
-            // fail if cell after word exists and isn't '.' 
-            if (coordinates[1] + word.length < puzzle[0].length) {
-                if (puzzle[coordinates[0]][coordinates[1] + word.length] != '.') continue;
-            }
-
-        } else {
-            // fail if word goes past puzzle edge
-            if (coordinates[0] + word.length > puzzle.length) break;
-
-            // fail if cell before word exists and isn't '.' 
-            if (coordinates[0] > 0) {
-                if (puzzle[coordinates[0] - 1][coordinates[1]] != '.') break;
-            }
-
-            // fail if cell after word exists and isn't '.' 
-            if (coordinates[0] + word.length < puzzle.length) {
-                if (puzzle[coordinates[0] + word.length][coordinates[1]] != '.') break;
-            }
-        }        
-
-        // make regexp to check if word on puzzle matches
-        let pattern = word
-            .split('')
-            .map(char => `(?:\\d|${char})`) // Non-capturing group to avoid unnecessary memory usage
-            .join('');
-        const re = new RegExp(pattern); // Something like /(?:\d|c)(?:\d|a)(?:\d|s)(?:\d|a)/ - matches letters or numbers
-
-        let wordOnPuzzle = '';
-        if (direction == 'right') {
-            for (let i = 0; i < word.length; i++) {
-                wordOnPuzzle += puzzle[coordinates[0]][coordinates[1] + i];
-            }
-        } else {
-            for (let i = 0; i < word.length; i++) {
-                wordOnPuzzle += puzzle[coordinates[0] + i][coordinates[1]];
-            }
-        }
-
-        if (re.test(wordOnPuzzle)) {
-            directions.push(direction);
-        }
-    }
-
-    return directions;
-}
-
-function wordFits(puzzle, word, coordinates) {
-    let directions = [];
-    let beforeFirst = '';
-    let afterLast = '';
-
-    // try to fit word in both directions
-    for (let direction of ['right', 'down']) {
-
-        // multipliers for different directions
-        let rowMult = 0;
-        let colMult = 0;
-        if (direction == 'right') colMult = 1;
-        if (direction == 'down') rowMult = 1;
-
-        let success = true;
-
-        // try each letter individually
-        for (let i = 0; i < word.length; i++) {
-            let row = coordinates[0] + i * rowMult;    // changes at 'down'
-            let col = coordinates[1] + i * colMult;    // changes at 'right'
-
-            // fail if word goes past edge
-            if (row > puzzle.length - 1 || col > puzzle[0].length) {
-                success = false;
-                break;
-            }
-
-            // fail if cell value isn't one of the allowed
-            let cell = puzzle[row][col];
-            if (!(cell == 2 || cell == 1 || cell == 0 || cell == word[i])) {
-                success = false;
-                break;
-            }
-
-            // save value of cell before word
-            if (i == 0) {
-                if (col - 1 * colMult < 0 || row - 1 * rowMult < 0) {
-                    beforeFirst = undefined;
-                } else {
-                    beforeFirst = puzzle[row - 1 * rowMult][col - 1 * colMult]
-                }
-            }
-
-            // save value of cell after word            
-            if (i == word.length - 1) {
-                if (col + 1 * colMult > puzzle[0].length - 1 || row + 1 * rowMult > puzzle.length - 1) {
-                    afterLast = undefined;
-                } else {
-                    afterLast = puzzle[row + 1 * rowMult][col + 1 * colMult]
-                }
-            }
-
-        }
-        // fail if usable cells before or after word
-        if (!(beforeFirst == '.' || beforeFirst == undefined) || !(afterLast == '.' || afterLast == undefined)) {
-            success = false;
-        }
-
-        if (success) {
-            directions.push(direction)
-        }
-    }
-
-    return directions;
+    return re.test(wordOnPuzzle);
 }
 
 function updatePuzzle(puzzle, word, coordinates, direction) {
@@ -158,7 +41,18 @@ function uniqueSolution(solutions, puzzle) {
     return true;
 }
 
-function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates) {
+function getWordOnPuzzle(puzzle, startCoords) {
+    let word = '';
+    let coords = [...startCoords.coordinates];
+    for (let i = 0; i < startCoords.length; i++) {
+        word += puzzle[coords[0]][coords[1]];
+        if (startCoords.direction == 'right') coords[1]++;
+        if (startCoords.direction == 'down') coords[0]++;
+    }
+    return word;
+}
+
+function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates) {   
 
     // Too many solutions, abort
     if (solutions.length > 1) {
@@ -177,18 +71,20 @@ function solver(currentPuzzle, words, startIndex, solutions, allStartCoordinates
     // Words remain, keep going
     let startCoords = allStartCoordinates[startIndex];
     startIndex++;
-    for (let i = 0; i < words.length; i++) {
-        let word = words[i];
-        // When word doesn't fit, abandon. Is this 'backtracking'?
-        const directions = wordFits(currentPuzzle, word, startCoords);
 
-        // When found fits, recur with updated values
-        for (let direction of directions) {
-            let newPuzzle = updatePuzzle(currentPuzzle, word, startCoords, direction); // write word into current puzzle
+    // 4/4 Only try words that have correct length
+
+    // Check words compatibilities with this
+    let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startCoords);
+    for (let i = 0; i < words.length; i++) {
+
+        // When it fits, recur with updated values
+        if (words[i].length == startCoords.length && wordFits(words[i], wordOnPuzzle)) {
+            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startCoords.coordinates, startCoords.direction); // write word into current puzzle
             let newWords = words.slice(0, i).concat(words.slice(i + 1)) // remove word from array
             solver(newPuzzle, newWords, startIndex, solutions, allStartCoordinates);
         }
     }
 }
 
-module.exports = { solver, wordFits, updatePuzzle, uniqueSolution};
+module.exports = { solver, wordFits, updatePuzzle, uniqueSolution };

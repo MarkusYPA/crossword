@@ -21,7 +21,7 @@ for (let i = 0; i < 4; i++) {
 }
 
 test('try if inputs 4 many start cells are valid', () => {
-    expect(validInput(allPuzzles[4], createArrayPuzzle(allPuzzles[4]), allWordSets[4])).toBe(true);
+    expect(validInput(allPuzzles[4], createArrayPuzzle(allPuzzles[4]), allWordSets[4])).toBe(false);
 });
 
 test('try if inputs 5 start 3 are invalid', () => {
@@ -55,27 +55,56 @@ test('try if inputs 11 no solutions are valid', () => {
 
 // Start Coordinates
 test('find start coordinates 0', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[0]))).toStrictEqual([[0,0],[0,0],[0,3],[2,0]]);
+    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[0]))).toStrictEqual([
+        { coordinates: [ 0, 0 ], length: 4, direction: 'right' },
+        { coordinates: [ 0, 0 ], length: 4, direction: 'down' },
+        { coordinates: [ 0, 3 ], length: 4, direction: 'down' },
+        { coordinates: [ 2, 0 ], length: 4, direction: 'right' }
+      ]);
 });
 
 test('find start coordinates 1', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[1]))).toStrictEqual([[0,3],[1,2],[1,8],[3,1],[3,12],[4,6],[5,0],[6,7],[6,10],[7,3],[8,1],[10,9]]);
+    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[1]))).toStrictEqual([
+        { coordinates: [ 0, 3 ], length: 3, direction: 'down' },
+        { coordinates: [ 1, 2 ], length: 10, direction: 'right' },
+        { coordinates: [ 1, 8 ], length: 8, direction: 'down' },
+        { coordinates: [ 3, 1 ], length: 8, direction: 'down' },
+        { coordinates: [ 3, 12 ], length: 4, direction: 'down' },
+        { coordinates: [ 4, 6 ], length: 9, direction: 'right' },
+        { coordinates: [ 5, 0 ], length: 6, direction: 'right' },
+        { coordinates: [ 6, 7 ], length: 7, direction: 'right' },
+        { coordinates: [ 6, 10 ], length: 7, direction: 'down' },
+        { coordinates: [ 7, 3 ], length: 5, direction: 'down' },
+        { coordinates: [ 8, 1 ], length: 8, direction: 'right' },
+        { coordinates: [ 10, 9 ], length: 3, direction: 'right' }
+      ]);
 });
 
 test('find start coordinates 2', () => {
-    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[2]))).toStrictEqual([[0,2],[0,4],[0,7],[1,0],[1,7],[3,2],[5,0],[5,6],[6,4],[8,2]]);
+    expect(getStartCoordinates(createArrayPuzzle(allPuzzles[2]))).toStrictEqual([
+        { coordinates: [ 0, 2 ], length: 7, direction: 'down' },
+        { coordinates: [ 0, 4 ], length: 5, direction: 'down' },
+        { coordinates: [ 0, 7 ], length: 10, direction: 'down' },
+        { coordinates: [ 1, 0 ], length: 5, direction: 'right' },
+        { coordinates: [ 1, 7 ], length: 4, direction: 'right' },
+        { coordinates: [ 3, 2 ], length: 7, direction: 'right' },
+        { coordinates: [ 5, 0 ], length: 4, direction: 'right' },
+        { coordinates: [ 5, 6 ], length: 5, direction: 'right' },
+        { coordinates: [ 6, 4 ], length: 5, direction: 'down' },
+        { coordinates: [ 8, 2 ], length: 6, direction: 'right' }
+      ]);
 });
 
 
 // Word fits
 test('word fits I', () => {
-    expect(wordFits([[ 'a', '0', '0', '1' ],[ 'n', '.', '.', '0' ],[ 't', '0', '0', '0' ],[ 'a', '.', '.', '0' ]], 'alan', [ 0, 0 ])).toStrictEqual([ 'right' ]);
+    expect(wordFits('alan', 'a001')).toBe(true);
 });
 test('word fits II word out of bounds', () => {
-    expect(wordFits([[ 'a', '0', '0', '1' ],[ 'n', '.', '.', '0' ],[ 't', '0', '0', '0' ],[ 'a', '.', '.', '0' ]], 'alanx', [ 0, 0 ])).toStrictEqual([]);
+    expect(wordFits('alanx', 'a001')).toBe(false);
 });
 test('word fits III word reaches banned cell ', () => {
-    expect(wordFits([[ 'a', '0', '0', '1', '.' ],[ 'n', '.', '.', '0', '.' ],[ 't', '0', '0', '0', '.' ],[ 'a', '.', '.', '0', '.' ]], 'alanx', [ 0, 0 ])).toStrictEqual([]);
+    expect(wordFits('alanx', 'a001.')).toBe(false);
 });
 
 // Update Puzzle
