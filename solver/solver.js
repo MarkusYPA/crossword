@@ -1,13 +1,11 @@
 
 function wordFits(word, wordOnPuzzle) {
-    // make regexp to check if word on puzzle matches
-    let pattern = String(word)
-        .split('')
-        .map(char => `(?:\\d|${char})`) // Non-capturing group to avoid unnecessary memory usage
-        .join('');
-    const re = new RegExp(pattern); // Something like /(?:\d|c)(?:\d|a)(?:\d|s)(?:\d|a)/ - matches letters or numbers
-
-    return re.test(wordOnPuzzle);
+    for (let i = 0; i < wordOnPuzzle.length; i++) {
+        if ( wordOnPuzzle[i] != 0 && wordOnPuzzle[i] != 1 && wordOnPuzzle[i] != word[i] && wordOnPuzzle[i] != 2 ) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function updatePuzzle(puzzle, word, coordinates, direction) {

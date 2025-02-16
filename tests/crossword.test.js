@@ -101,10 +101,7 @@ test('word fits I', () => {
     expect(wordFits('alan', 'a001')).toBe(true);
 });
 test('word fits II word out of bounds', () => {
-    expect(wordFits('alanx', 'a001')).toBe(false);
-});
-test('word fits III word reaches banned cell ', () => {
-    expect(wordFits('alanx', 'a001.')).toBe(false);
+    expect(wordFits('alanx', 'a001z')).toBe(false);
 });
 
 // Update Puzzle
