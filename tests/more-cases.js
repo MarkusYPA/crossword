@@ -1,3 +1,5 @@
+'use strict';
+
 const { crosswordSolver } = require('../src/crosswordSolver');
 
 const moreTitles = [];
@@ -173,146 +175,113 @@ moreWordSets.push([
     'lurk',
 ]);
 
-morePuzzles.push(`.........200000...................200000..1.
-.........0......110000............0.......0.
-.........0.....1.0..........11000.0.....1.0.
-.........0.....0.0..1010000..0....0.....0.0.
-.....1010001.200000...0......0..1000001.0.0.
-.......0.0.0.0.0.0.1..0...1..0.1..0...0.0.0.
-.1.1...0...0.0...0.0..0...0..0.0....1000000.
-.0.0...1000000.1..1000000.0..1000000..0.0...
-1000...0...0.0.0.1.0..0...0....0....1.0...1.
-.0.0...0...0.0.0.0.0..0.1.0.100000.10000000.
-...0..1.1..0.0.0.0.0....0.0....0....0.0...0.
-...100000..100000000..10000000.0....0.....0.
-......0.0......0.0.0....0......11000001...0.
-..10000.0.1..1.0.0..1...0..1....0...0.0...0.
-.1....0.0.0.100000000..10000000.10000000..0.
-.0.1..0.0.0..0.0.0..0...0..0....0...0.0.....
-.0.0..10000000......0...0..0.2000.1..10010..
-10000.....0..0...1..0.1....0.0..0.0...0.0...
-.0.0....1..1.0...0..0.0.100000000000.1000...
-...0...10000000..0..0.0....0.0..0.0.1.0.0...
-101000..0..0.0...0..0.0....0.0....0.0...0...
-..0.....0..0.0..100100000....0.1000000.1....
-100000..0..0.....0.0..0......0....0.0..0....
-..0...1.10000001.0.0.1000000000...0.0..0....
-..0.1.0.0..0...0.0.0..0......0....0.0..0....
-1.1000000..0...0..10000.20000000000000.0....
-0.0.0.0.....1..0...0....0....0....0.0..0....
-0..1000000..1000000..1000000000.....0..0....
-0...0.0.....0..0........0....0.100000000....
-1000000....1000000.100000...........0..0....
-0...0.......0...........0....100000000......
-............................................`
-);
 
-moreTitles.push('Gothic 96 words')
+moreTitles.push('Gothic 70 words');
+morePuzzles.push(`1.1...1.1.....1.11000000........100010..
+0.10000000..1.0..0......11000000....0...
+0.0...0.0...0.100000000..0..........0...
+0.0.1.0.0...0.0..0.....1.0.......100001.
+0..10000001.0.0..0..10000000........0.0.
+0...0.0.0.0.0....0.1...0.0......1...0.0.
+1000000.0.10000100000..0.0...11000010.0.
+....0.0...0.0..0.0.0..100000..0.0..0..0.
+.1........0...1000.0...0.0....1000.0..0.
+100000010000...0.0.0...0..1...0.0..0....
+.0.....0..0..1.0..100000000...0.0..0....
+.0..1..0..0..0.0...0......0...0.0..0..1.
+.0.1000000000000...0......0...0.0..0..0.
+.0..0..0..0..0.0...0..100000010..100000.
+.0..0..0..0..0.0...0.1....0..0........0.
+.0..0..0..0..0.......0.100000000.110000.
+..1000000...10000010.0....0..0....0.....
+.1..0..0..1..0....0..0..100000000.0.....
+.0..0..0..0....11000000......0....0.1...
+.0..0.10000000..0.0..0.10010.10000000...
+.0.1...0..0.....0.0..0....0..0....0.0...
+100000000.0.10000.0......10000000.0.0...
+.0.0...0..0.....1000000...0.........0...
+.0.1000.100000..0.0......10000.100000...`
+);
 moreWordSets.push([
-    'omen',
-    'veil',
-    'madness',
-    'hollow',
-    'shiver',
-    'shadow',
-    'dismal',
-    'mansion',
-    'wither',
-    'sibilant',
-    'ether',
-    'raven',
-    'phantom',
-    'phantasm',
-    'parlor',
-    'asylum',
-    'decay',
-    'lurk',
-    'bricked',
-    'shroud',
-    'miasma',
-    'visage',
-    'obsession',
-    'tombstone',
-    'midnight',
-    'silence',
-    'belfry',
-    'macabre',
-    'eerie',
-    'shackles',
-    'immortal',
-    'haunted',
-    'cryptic',
-    'wraith',
-    'monomania',
-    'nocturnal',
-    'revenant',
-    'secluded',
-    'charred',
-    'cadaver',
-    'insanity',
-    'serpent',
-    'torment',
-    'cadence',
-    'agony',
-    'delirium',
-    'whisper',
-    'gothic',
-    'lamplight',
-    'gargoyle',
-    'portrait',
-    'twilight',
-    'coffin',
-    'cobweb',
-    'chilling',
-    'crimson',
-    'ominous',
-    'nightmare',
-    'hysteria',
-    'pallor',
-    'moonlit',
-    'crypt',
-    'purgatory',
-    'recluse',
-    'decrepit',
-    'specter',
-    'horror',
-    'doppelgänger',
-    'sorcery',
-    'forlorn',
-    'lantern',
-    'sallow',
-    'gruesome',
-    'foggy',
-    'foreboding',
-    'rattling',
-    'fogbound',
-    'mournful',
-    'hallucination',
-    'howl',
-    'threnody',
-    'aberration',
-    'scythe',
-    'claustrophobic',
-    'cursed',
-    'premonition',
-    'eldritch',
-    'cloaked',
-    'thunder',
-    'dirge',
-    'inexplicable',
-    'echo',
-    'ghoul',
-    'sepulcher',
-    'heartbeat',
-    'labyrinth',
-])
+'phantom',
+'omen',
+'midnight',
+'sibilant',
+'mansion',
+'secluded',
+'eerie',
+'thunder',
+'inexplicable',
+'insanity',
+'charred',
+'doppelgänger',
+'agony',
+'hallucination',
+'labyrinth',
+'claustrophobic',
+'premonition',
+'obsession',
+'rattling',
+'aberration',
+'crimson',
+'forlorn',
+'monomania',
+'nocturnal',
+'echo',
+'twilight',
+'howl',
+'foreboding',
+'immortal',
+'fogbound',
+'chilling',
+'portrait',
+'hysteria',
+'lurk',
+'moonlit',
+'tombstone',
+'threnody',
+'wraith',
+'gothic',
+'belfry',
+'shackles',
+'ghoul',
+'decrepit',
+'hollow',
+'sepulcher',
+'lamplight',
+'gruesome',
+'sorcery',
+'revenant',
+'recluse',
+'asylum',
+'delirium',
+'nightmare',
+'ominous',
+'veil',
+'purgatory',
+'mournful',
+'miasma',
+'heartbeat',
+'raven',
+'ether',
+'phantasm',
+'pallor',
+'eldritch',
+'scythe',
+'crypt',
+'cryptic',
+'dirge',
+'shiver',
+'parlor'
+]);
+
 
 let moreCases = [];
 for (let i = 0; i < moreTitles.length; i++) {
     moreCases.push({ title: moreTitles[i], puzzle: morePuzzles[i], words: moreWordSets[i] })
 }
 
-for (let i = 0; i < moreCases.length - 1; i++) {    // Skip last one, too slow
+for (let i = 0; i < moreCases.length; i++) {
     console.log('\n' + moreCases[i].title);
     crosswordSolver(moreCases[i].puzzle, moreCases[i].words);
 }

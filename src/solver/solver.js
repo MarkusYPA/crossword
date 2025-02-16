@@ -1,3 +1,4 @@
+'use strict';
 
 function wordFits(word, wordOnPuzzle) {
     for (let i = 0; i < wordOnPuzzle.length; i++) {
@@ -8,14 +9,14 @@ function wordFits(word, wordOnPuzzle) {
     return true;
 }
 
-function updatePuzzle(puzzle, word, coordinates, direction) {
+function updatePuzzle(puzzle, word, startPosition) {
     // Shallow copy each line so original lines don't get modified
     let newPuzzle = puzzle.map(line => [...line]);
 
-    const row = coordinates[0];
-    const col = coordinates[1];
+    const row = startPosition.coordinates[0];
+    const col = startPosition.coordinates[1];
 
-    if (direction == 'down') {
+    if (startPosition.direction == 'down') {
         for (let i = 0; i < word.length; i++) {
             newPuzzle[row + i][col] = word[i];
         }
@@ -28,16 +29,16 @@ function updatePuzzle(puzzle, word, coordinates, direction) {
     return newPuzzle;
 }
 
-function getWordOnPuzzle(puzzle, startCoords) {
+function getWordOnPuzzle(puzzle, startPosition) {
     let word = '';
-    const coords = startCoords.coordinates;
+    const coords = startPosition.coordinates;
 
-    if (startCoords.direction == 'down') {
-        for (let i = 0; i < startCoords.length; i++) {
+    if (startPosition.direction == 'down') {
+        for (let i = 0; i < startPosition.length; i++) {
             word += puzzle[coords[0] + i][coords[1]];
         }
     } else {
-        for (let i = 0; i < startCoords.length; i++) {
+        for (let i = 0; i < startPosition.length; i++) {
             word += puzzle[coords[0]][coords[1] + i];
         }
     }
@@ -59,20 +60,23 @@ function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
     }
 
     // Words remain, keep going
-    let startCoords = startPositions[startIndex];
+    let startPosition = startPositions[startIndex];
     startIndex++;
 
-    // Check words compatibilities with this
-    let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startCoords);
+    // Check compatibility with this
+    let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startPosition);
     for (let i = 0; i < words.length; i++) {
 
-        // When it fits, recur with updated values
-        if (words[i].length == startCoords.length && wordFits(words[i], wordOnPuzzle)) {
-            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startCoords.coordinates, startCoords.direction); // write word into current puzzle
-            let newWords = words.slice(0, i).concat(words.slice(i + 1)) // remove word from array
+        // Try if words fit 
+        if (words[i].length == startPosition.length && wordFits(words[i], wordOnPuzzle)) {
+            // write word into current puzzle
+            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startPosition);
+            // remove word from array
+            let newWords = words.slice(0, i).concat(words.slice(i + 1))
+
+            // Recur with updated values
             solver(newPuzzle, newWords, startIndex, solutions, startPositions);
-            continue;
-        }
+        }        
     }
 }
 

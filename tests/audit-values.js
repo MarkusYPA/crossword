@@ -1,3 +1,5 @@
+'use strict';
+
 const allTitles = [];
 const allPuzzles = [];
 const allWordSets = [];

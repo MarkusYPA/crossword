@@ -32,9 +32,10 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
-    words.sort((a, b) => a.length - b.length);
+    // Slightly faster when starting with long words
+    words.sort((a, b) => b.length - a.length);
 
-    // solver() finds solutions
+    // Solver() finds solutions
     let solutions = [];
     solver(arrayPuzzle, words, 0, solutions, startPositions)
 

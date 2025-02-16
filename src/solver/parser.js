@@ -1,3 +1,4 @@
+'use strict';
 
 function createArrayPuzzle(emptyPuzzle) {
     let stringLines = String(emptyPuzzle).split(/\r?\n/);
