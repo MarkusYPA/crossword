@@ -1,6 +1,6 @@
 'use strict';
 
-const { createArrayPuzzle, validInput, getStartPositions } = require('./solver/parser');
+const { createArrayPuzzle, validInput, getStartPositions, makeWordMap } = require('./solver/parser');
 const { solver } = require('./solver/solver');
 
 const puzzle = '2001\n0..0\n1000\n0..0';
@@ -32,12 +32,13 @@ function crosswordSolver(stringPuzzle, words) {
         return;
     }
 
-    // Slightly faster when starting with long words
-    words.sort((a, b) => b.length - a.length);
+    // Put words into map where key is length and value array of words
+    let wordMap = makeWordMap(words);
+    let usedWords = new Map();
 
     // Solver() finds solutions
     let solutions = [];
-    solver(arrayPuzzle, words, 0, solutions, startPositions)
+    solver(arrayPuzzle, wordMap, usedWords, 0, solutions, startPositions)
 
     if (solutions.length != 1) {
         console.log("Error");

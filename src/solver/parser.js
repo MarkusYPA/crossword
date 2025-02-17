@@ -127,4 +127,30 @@ function getStartPositions(puzzle) {
     return starts;
 }
 
-module.exports = { createArrayPuzzle, validInput, getStartPositions };
+function makeWordMap(words) {   
+    let longest = 0;
+    for (let wd of words) {
+        if (wd.length > longest) {
+            longest = wd.length;
+        }
+    }
+
+    // Put words into separate arrays by length and under key of length
+    const wordMap = new Map()
+    while (longest > 0) {
+        let sameLength = [];
+        for (let wd of words) {
+            if (wd.length == longest) {
+                sameLength.push(wd);
+            }
+        }
+        if (sameLength.length != 0){
+            wordMap.set(longest, [...sameLength]);
+        }        
+        longest--;
+    }
+
+    return wordMap;
+}
+
+module.exports = { createArrayPuzzle, validInput, getStartPositions, makeWordMap };

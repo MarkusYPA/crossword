@@ -46,7 +46,7 @@ function getWordOnPuzzle(puzzle, startPosition) {
     return word;
 }
 
-function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
+function solver(currentPuzzle, wordMap, usedWords, startIndex, solutions, startPositions) {
 
     // Too many solutions, abort
     if (solutions.length > 1) {
@@ -54,7 +54,7 @@ function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
     }
 
     // Solution complete, end here        
-    if (words.length == 0) {
+    if (usedWords.size == startPositions.length) {
         solutions.push(currentPuzzle);
         return;
     }
@@ -63,19 +63,21 @@ function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
     let startPosition = startPositions[startIndex];
     startIndex++;
 
+    const words = wordMap.get(startPosition.length);
+
     // Check compatibility with this
     let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startPosition);
     for (let i = 0; i < words.length; i++) {
 
         // Try if words fit 
-        if (words[i].length == startPosition.length && wordFits(words[i], wordOnPuzzle)) {
+        if (!(usedWords.has(words[i])) && wordFits(words[i], wordOnPuzzle)) {
             // write word into current puzzle
             let newPuzzle = updatePuzzle(currentPuzzle, words[i], startPosition);
-            // remove word from array
-            let newWords = words.slice(0, i).concat(words.slice(i + 1))
+            // add used word to map
+            let newUsedWords = new Map(usedWords).set(words[i], true);
 
             // Recur with updated values
-            solver(newPuzzle, newWords, startIndex, solutions, startPositions);
+            solver(newPuzzle, wordMap, newUsedWords, startIndex, solutions, startPositions);
         }        
     }
 }
