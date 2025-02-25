@@ -116,7 +116,8 @@ function getStartPositions(puzzle) {
 
                     // store starting postition with length and direction of expected word
                     if (length > 1) {
-                        starts.push({ coordinates: coordinates, length: length, direction: direction });
+                        //r[ind] = i
+                        starts.push({ coordinates: coordinates, length: length, direction: direction, ind: starts.length});
                     }
 
                 }

@@ -46,7 +46,62 @@ function getWordOnPuzzle(puzzle, startPosition) {
     return word;
 }
 
-function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
+function findCrossings(used, remaining) {
+    if (used.length == 0) {
+        return remaining
+    }
+
+    let crossMap = new Map()
+
+    for (let i = 0; i < remaining.length; i++) {
+        const r = remaining[i]
+        let counter = 0
+        let crossingThis = new Set()
+
+        for (const u of used) {
+
+            if (u.direction == "down" && r.direction == "right") {
+                if (u.coordinates[0] <= r.coordinates[0] &&
+                    u.coordinates[0] + u.length >= r.coordinates[0] &&
+                    u.coordinates[1] >= r.coordinates[1] &&
+                    u.coordinates[1] <= r.coordinates[1] + r.length) {
+
+                    remaining[i]['ind'] = i
+                    crossingThis.add(r)
+                    counter++
+                }
+            }
+
+            if (u.direction == "right" && r.direction == "down") {
+                if (u.coordinates[1] <= r.coordinates[1] &&
+                    u.coordinates[1] + u.length >= r.coordinates[1] &&
+                    u.coordinates[0] >= r.coordinates[0] &&
+                    u.coordinates[0] <= r.coordinates[0] + r.length) {
+
+                    remaining[i]['ind'] = i
+                    crossingThis.add(r)
+                    counter++
+                }
+            }
+
+        }
+
+        if (!crossMap.has(counter)) {
+            crossMap.set(counter, new Set())
+        }
+
+        // keep track of how many used words this slot crosses
+        crossingThis.forEach(sp => crossMap.get(counter).add(sp));
+    }
+
+    // return the starting positions with the most crossings
+    let mosts = crossMap.get(Math.max(...crossMap.keys()))
+
+    //return mosts
+    return [...mosts]
+}
+
+function solver(currentPuzzle, words, solutions, startPositions, used, remaining) {
 
     // Too many solutions, abort
     if (solutions.length > 1) {
@@ -60,24 +115,36 @@ function solver(currentPuzzle, words, startIndex, solutions, startPositions) {
     }
 
     // Words remain, keep going
-    let startPosition = startPositions[startIndex];
-    startIndex++;
 
-    // Check compatibility with this
-    let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, startPosition);
-    for (let i = 0; i < words.length; i++) {
+    // get startPositions that cross with the current solution
+    const crossings = findCrossings(used, remaining)
 
-        // Try if words fit 
-        if (words[i].length == startPosition.length && wordFits(words[i], wordOnPuzzle)) {
-            // write word into current puzzle
-            let newPuzzle = updatePuzzle(currentPuzzle, words[i], startPosition);
-            // remove word from array
-            let newWords = words.slice(0, i).concat(words.slice(i + 1))
 
-            // Recur with updated values
-            solver(newPuzzle, newWords, startIndex, solutions, startPositions);
-        }        
+    for (let i = 0; i < crossings.length; i++) {
+        // Check compatibility with this
+        let wordOnPuzzle = getWordOnPuzzle(currentPuzzle, crossings[i]);
+
+        for (let j = 0; j < words.length; j++) {
+
+            // Try if words fit 
+            if (words[j].length == crossings[i].length && wordFits(words[j], wordOnPuzzle)) {
+                // write word into current puzzle
+                let newPuzzle = updatePuzzle(currentPuzzle, words[j], crossings[i]);
+                // remove word from array
+                let newWords = words.slice(0, j).concat(words.slice(j + 1))
+
+                let newUsed = [...used]
+                newUsed.push(crossings[i])
+
+                let newRemaining = remaining.slice(0, crossings[i]['ind']).concat(remaining.slice(crossings[i]['ind'] + 1))
+
+
+                // Recur with updated values
+                solver(newPuzzle, newWords, solutions, startPositions, newUsed, newRemaining);
+            }
+        }
     }
 }
+
 
 module.exports = { solver, wordFits, updatePuzzle };

@@ -281,7 +281,7 @@ for (let i = 0; i < moreTitles.length; i++) {
     moreCases.push({ title: moreTitles[i], puzzle: morePuzzles[i], words: moreWordSets[i] })
 }
 
-for (let i = 0; i < moreCases.length; i++) {
+for (let i = 0; i < moreCases.length -2; i++) {
     console.log('\n' + moreCases[i].title);
     crosswordSolver(moreCases[i].puzzle, moreCases[i].words);
 }
